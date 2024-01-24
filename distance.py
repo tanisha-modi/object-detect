@@ -1,13 +1,13 @@
 import cv2 
 
 know_distance = 30
-know_width = 14.3
+know_width = 14.5
 
 GREEN = (0, 255, 0)
 RED = (0, 0, 255)
 WHITE = (255, 255, 255)
 
-face_detector = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
+cascade = cv2.CascadeClassifier("cascade.xml")
 
 def FocalLength(measured_distance, real_width, width_in_rf_image):
     focal_length = (width_in_rf_image * measured_distance) / real_width
@@ -20,7 +20,7 @@ def Distance_finder(focal_length, real_face_width, face_width_in_frame):
 def face_data(image):
     face_width = 0
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    faces = face_detector.detectMultiScale(gray_image, 1.3, 5)
+    faces = cascade.detectMultiScale(gray_image, 1.3, 5)
     for(x, y, h, w) in faces:
         cv2.rectangle(image, (x, y), (x+w, y+h), WHITE, 1)
         face_width = w
@@ -55,3 +55,36 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+
+
+
+
+
+
+
+
+
+
+
+# import cv2
+
+# # Load the trained classifier
+# cascade = cv2.CascadeClassifier("cascade.xml")
+
+# # Load an image for testing
+# img = cv2.imread('Ref_image.png')
+
+# # Convert the image to grayscale
+# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+# # Detect objects in the image
+# apples = cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(20, 20))
+
+# # Draw rectangles around the detected apples
+# for (x, y, w, h) in apples:
+#     cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+
+# # Display the result
+# cv2.imshow('Apple Detection', img)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
